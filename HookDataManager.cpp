@@ -44,6 +44,19 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
     {
         if (keyCode == KEY_CTRL)
             m_keyCtrlPress = false;
+    }
+
+        break;
+    case e_WParam::KEYDOWN:
+    {
+        if (keyCode == KEY_CTRL)
+        {
+            if (!m_keyCtrlPress)
+            {
+                m_keyCtrlPress = true;
+                m_keyCPress = 0;
+            }
+        }
 
         if (m_keyCtrlPress)
         {
@@ -52,27 +65,16 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
 
             if (m_keyCPress == 2)
             {
+                qDebug()<<"开始翻译";
                 translate();
                 m_keyCPress = 0;
             }
         }
     }
-
-        break;
-    case e_WParam::KEYDOWN:
-    {
-        if (keyCode == KEY_CTRL)
-        {
-            m_keyCtrlPress = true;
-            m_keyCPress = 0;
-        }
-    }
         break;
     case e_WParam::SYSKEYDOWN:
-        //message("alt按键按下") ;
         break;
     case e_WParam::SYSKEYUP:
-        //message("alt按键松开") ;
         break;
     }
 }
