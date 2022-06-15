@@ -1,7 +1,7 @@
 #include "HookHelper.h"
 // 必要的静态链接库
-#pragma comment  (lib,"User32.lib")
-#pragma comment  (lib,"Gdi32.lib")
+//#pragma comment  (lib,"User32.lib")
+//#pragma comment  (lib,"Gdi32.lib")
 
 // 配置打印方式
 HHOOK g_keyHHook;

@@ -32,7 +32,7 @@ bool HttpHelper::postSyn(QString url, QMap<QString, QString> headerdata, QByteAr
     }
     else
     {
-        qDebug() << "请求失败";
+        qDebug() << "请求失败"<<reply->error()<<reply->readAll();
         return false;
     }
 }

@@ -18,6 +18,7 @@ Window {
 
     TextArea{
         id:textarea
+        anchors.fill: parent
         Component.onCompleted: {
             console.log(hookData.registerKeyBoardHook())
         }

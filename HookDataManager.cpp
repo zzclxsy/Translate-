@@ -4,21 +4,11 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMimeData>
-#include "HttpHelper.h"
-#include <QSslSocket>
+
 HookDataManager::HookDataManager(QObject *parent):QObject(parent)
 {
     m_keyCtrlPress = false;
     m_keyCPress = 0;
-    QString url ="http://www.httpclient.cn/";
-    QMap<QString, QString> headers;
-    headers.insert("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.39");
-    headers.insert("QNetworkRequest::UserAgentHeader", "RT-Thread ART");
-    QByteArray data;
-    HttpHelper http;
-    bool isok = http.getSyn(url,headers,data);
-    if(isok)
-        qDebug()<<"ggg:"<<data;
 }
 
 HookDataManager::~HookDataManager()
@@ -62,7 +52,7 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
 
             if (m_keyCPress == 2)
             {
-                getClipBoard();
+                translate();
                 m_keyCPress = 0;
             }
         }
@@ -79,21 +69,22 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
     }
         break;
     case e_WParam::SYSKEYDOWN:
-        message("alt按键按下") ;
+        //message("alt按键按下") ;
         break;
     case e_WParam::SYSKEYUP:
-        message("alt按键松开") ;
+        //message("alt按键松开") ;
         break;
     }
 }
 
-void HookDataManager::getClipBoard()
+void HookDataManager::translate()
 {
     QClipboard *clipboard = QGuiApplication::clipboard();
     const QMimeData *mimeData = clipboard->mimeData();
     if (mimeData->hasText())
     {
         //将图片数据转为QImage
-        message(mimeData->text());
+        message(m_translate.StartTranslate(mimeData->text()));
     }
 }
+

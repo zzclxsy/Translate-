@@ -10,6 +10,7 @@ SOURCES += \
         HookDataManager.cpp \
         HookHelper.cpp \
         HttpHelper.cpp \
+        XunFeiTranslate.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -28,4 +29,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     HookDataManager.h \
     HookHelper.h \
-    HttpHelper.h
+    HttpHelper.h \
+    XunFeiTranslate.h

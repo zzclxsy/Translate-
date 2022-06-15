@@ -37,16 +37,16 @@ enum class e_WParam{
     KEYUP=0x0101,
     SYSKEYDOWN=0x0104,
     SYSKEYUP=0x0105,
-    // 鼠标
-    LBUTTONUP=0x0202,
-    LBUTTONDOWN=0x0201,
-    RBUTTONDOWN=0x0204,
-    RBUTTONUP=0x0205,
-    // 滚动事件
-    MOUSEHWHEEL=0x020E,
-    MOUSEWHEEL=0x020A,
-    // 鼠标移动
-    MOUSEMOVE=0x0200
+//    // 鼠标
+//    LBUTTONUP=0x0202,
+//    LBUTTONDOWN=0x0201,
+//    RBUTTONDOWN=0x0204,
+//    RBUTTONUP=0x0205,
+//    // 滚动事件
+//    MOUSEHWHEEL=0x020E,
+//    MOUSEWHEEL=0x020A,
+//    // 鼠标移动
+//    MOUSEMOVE=0x0200
 };
 /**
  * @brief 获取虚拟键码
