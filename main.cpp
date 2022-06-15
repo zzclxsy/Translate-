@@ -8,9 +8,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    HookDataManager hookData;
     QGuiApplication app(argc, argv);
-
+    HookDataManager hookData;
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("hookData",&hookData);
     const QUrl url(QStringLiteral("qrc:/main.qml"));

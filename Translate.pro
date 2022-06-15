@@ -1,4 +1,4 @@
-QT += quick
+QT += quick  network
 
 CONFIG += c++11
 
@@ -9,6 +9,7 @@ CONFIG += c++11
 SOURCES += \
         HookDataManager.cpp \
         HookHelper.cpp \
+        HttpHelper.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     HookDataManager.h \
-    HookHelper.h
+    HookHelper.h \
+    HttpHelper.h

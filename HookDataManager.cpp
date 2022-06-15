@@ -4,10 +4,21 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMimeData>
+#include "HttpHelper.h"
+#include <QSslSocket>
 HookDataManager::HookDataManager(QObject *parent):QObject(parent)
 {
     m_keyCtrlPress = false;
     m_keyCPress = 0;
+    QString url ="http://www.httpclient.cn/";
+    QMap<QString, QString> headers;
+    headers.insert("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.39");
+    headers.insert("QNetworkRequest::UserAgentHeader", "RT-Thread ART");
+    QByteArray data;
+    HttpHelper http;
+    bool isok = http.getSyn(url,headers,data);
+    if(isok)
+        qDebug()<<"ggg:"<<data;
 }
 
 HookDataManager::~HookDataManager()
