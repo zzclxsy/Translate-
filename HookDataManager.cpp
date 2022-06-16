@@ -27,7 +27,7 @@ void HookDataManager::registerKeyBoardHook()
     BOOL flag = AddKeyBoardHookCallBack(callMsg);
     if (!flag)
         message("键盘钩子设置失败");
-    message("键盘钩子设置成功");
+    message("选中待翻译文本,按住Ctrl的同时，再连续按2下C键进行翻译");
 }
 
 void HookDataManager::uninstallKeyBoardHook()
