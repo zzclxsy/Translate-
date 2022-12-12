@@ -3,6 +3,7 @@
 #include <QObject>
 #include "HookHelper.h"
 #include "XunFeiTranslate.h"
+#include "ITranslate.h"
 #define KEY_CTRL 162
 #define KEY_C 67
 class HookDataManager:public QObject
@@ -16,13 +17,14 @@ public:
 
 private:
     void keyEvent(e_WParam wParam, LPARAM lParam);
+    void mouseEvent(e_WParam wParam, LPARAM lParam);
     void translate();
     QString getTranslate(QString data);
 
 private:
     bool m_keyCtrlPress;
     int m_keyCPress;
-    Translate m_translate;
+    ITranslate *mp_translate;
 signals:
     void message(QString mess);
     void clipDataChanged();

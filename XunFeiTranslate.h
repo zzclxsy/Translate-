@@ -3,16 +3,12 @@
 #include <qstring.h>
 #include <QList>
 #include "HttpHelper.h"
-class Translate
+#include "ITranslate.h"
+class XunFeiTranslate:public ITranslate
 {
 public:
-    typedef enum{
-        HanToEnglis,
-        EnglisToHan
-    }E_Language;
-
-    Translate();
-    QString StartTranslate(QString text, E_Language = EnglisToHan);
+    XunFeiTranslate();
+    virtual QString StartTranslate(QString text, E_Language = EnglisToHan) override;
 
 private:
 

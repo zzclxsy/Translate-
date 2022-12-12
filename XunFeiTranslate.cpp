@@ -13,13 +13,13 @@
 #define Algorithm   "hmac-sha256"
 #define HttpProto  "HTTP/1.1"
 
-Translate::Translate()
+XunFeiTranslate::XunFeiTranslate()
 {
     m_languageDireMap.insert(E_Language::EnglisToHan,S_Direction{"en","cn"});
     m_languageDireMap.insert(E_Language::HanToEnglis,S_Direction{"cn","en"});
 }
 
-QString Translate::StartTranslate(QString text, E_Language language)
+QString XunFeiTranslate::StartTranslate(QString text, E_Language language)
 {
     m_date = GetRFC1123Time();
     S_Direction direct = m_languageDireMap[language];
@@ -35,7 +35,7 @@ QString Translate::StartTranslate(QString text, E_Language language)
     return QString();
 }
 
-QString Translate::GetHttpBody(QString app_id, QString from, QString to, QString text)
+QString XunFeiTranslate::GetHttpBody(QString app_id, QString from, QString to, QString text)
 {
     QJsonObject root;
     QJsonObject common;
@@ -54,11 +54,11 @@ QString Translate::GetHttpBody(QString app_id, QString from, QString to, QString
     JsonDoc.setObject(root);
     QByteArray  jsonStr = JsonDoc.toJson(QJsonDocument::Compact);
     QString strJson(jsonStr);
-    qDebug()<<"Translate::GetHttpBody"<<strJson.toStdString().c_str();
+    qDebug()<<"XunFeiTranslate::GetHttpBody"<<strJson.toStdString().c_str();
     return strJson;
 }
 
-QMap<QString, QString> Translate::GetHttpHeader()
+QMap<QString, QString> XunFeiTranslate::GetHttpHeader()
 {
     QMap<QString, QString> header;
 
@@ -71,7 +71,7 @@ QMap<QString, QString> Translate::GetHttpHeader()
     return header;
 }
 
-QString Translate::GetRFC1123Time()
+QString XunFeiTranslate::GetRFC1123Time()
 {
     QLocale locale = QLocale::English;
     QString format = "ddd,dd MMM yyyy hh:mm:ss";
@@ -79,13 +79,13 @@ QString Translate::GetRFC1123Time()
     return currentTime;
 }
 
-QString Translate::GetAuthorization()
+QString XunFeiTranslate::GetAuthorization()
 {
     QString author = QString("api_key=\"%1\", algorithm=\"hmac-sha256\", headers=\"host date request-line digest\",signature=\"%2\"").arg(API_KEY).arg(m_sign);
     return author;
 }
 
-void Translate::GetSignature(QString body)
+void XunFeiTranslate::GetSignature(QString body)
 {
     QCryptographicHash SHA256(QCryptographicHash::Sha256);
     SHA256.addData(body.toLatin1().data());
@@ -99,7 +99,7 @@ void Translate::GetSignature(QString body)
     m_sign = QMessageAuthenticationCode::hash(signatureStr.toUtf8(),APISecret, QCryptographicHash::Sha256).toBase64();
 }
 
-QString Translate::GetDestText(QByteArray data)
+QString XunFeiTranslate::GetDestText(QByteArray data)
 {
     QJsonDocument document;
     QJsonParseError parseJsonErr;

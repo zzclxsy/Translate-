@@ -3,61 +3,46 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQml 2.12
 import QtGraphicalEffects 1.12
+import QtQuick.Window 2.12
 Rectangle {
     id:root
-    color: "#00000000"
+    color: "#ffffff"
     state: "hide"
     border.width: 0
-    function distinguish(data)
-    {
-        let pattern = /[^\u4E00-\u9FA5]/;
-        var countCN = 0
-        var countEN = 0
-        for (var i = 0; i < data.length; i++)
-        {
-            if (!pattern.test(data[i])) {
-                countCN++
-                console.log("中文:",data[i])
-            } else {
-                countEN++
-                console.log("英文:",data[i])
-            }
-        }
-        var width = countCN*textarea.font.pixelSize + (textarea.font.pixelSize/2)*countEN;
-        var row = parseInt(width/300) + 1
-
-        window.setWidth(300 + textarea.font.pixelSize)
-        window.setHeight(row * textarea.font.pixelSize + 38*2);
-    }
 
     Connections{
         target: hookData
         onMessage:{
-            textarea.text =mess
-            distinguish(mess)
+            testShow.text =mess
+            window.setHeight(testShow.contentHeight)
+            testShow.focus = true
         }
     }
 
-    Text{
-        id:textarea
+    TextEdit{
+        id:testShow
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: rectangle.bottom
+        anchors.top: titleRect.bottom
         anchors.bottom: parent.bottom
+        anchors.margins: 5
         font.family: "黑体"
-        anchors.topMargin: 0
+        color: "#1E90FF"
+        readOnly: true
+        selectByMouse: true
         wrapMode: Text.WrapAnywhere
         font {
-            pixelSize: 25
+            pixelSize: 20
             bold: true
         }
+
         Component.onCompleted: {
             console.log(hookData.registerKeyBoardHook())
         }
     }
 
     Rectangle {
-        id: rectangle
+        id: titleRect
         height: 32
         color: "#50CCCCCC"
         anchors.left: parent.left
@@ -89,29 +74,32 @@ Rectangle {
                 anchors.bottomMargin: 0
                 anchors.topMargin: 0
                 fillMode: Image.PreserveAspectFit
-                ColorOverlay{
+                layer.enabled: true
+                layer.effect:ColorOverlay{
                     id:colorOverlay
                     anchors.fill: closeimage
                     source: closeimage
                     color: "#638cba"
-                }
-                MouseArea{
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onEntered: {
-                        colorOverlay.color="#e1453c"
-                    }
-                    onExited: {
-                        colorOverlay.color="transparent"
-                    }
-                    onPressed: {
-                        colorOverlay.color = "#e58a84"
-                    }
 
-                    onClicked: {
-                        close()
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: {
+                            parent.color="#e1453c"
+                        }
+                        onExited: {
+                            parent.color="transparent"
+                        }
+                        onPressed: {
+                            parent.color = "#e58a84"
+                        }
+
+                        onClicked: {
+                            close()
+                        }
                     }
                 }
+
             }
 
         }
@@ -130,7 +118,7 @@ Rectangle {
 
             MouseArea{
                 anchors.fill: parent
-                property bool topHint: false
+                property bool topHint: true
                 onClicked: {
                     if (!topHint)
                     {
@@ -153,7 +141,63 @@ Rectangle {
                     fillMode: Image.PreserveAspectCrop
                 }
             }
+            Component.onCompleted: {
+                image.source = "qrc:/image/Top.svg"
+                window.flags |= Qt.WindowStaysOnTopHint
+            }
         }
+
+        Rectangle {
+            id: minRect
+            x: 163
+            width: 38
+            color: "transparent"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 0
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 0
+
+            Image {
+                id: minimage
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                source: "qrc:/image/min.svg"
+                anchors.bottomMargin: 2
+                anchors.topMargin: 2
+                fillMode: Image.PreserveAspectFit
+                layer.enabled: true
+                layer.effect:ColorOverlay{
+                    anchors.fill: minimage
+                    source: minimage
+                    color: "transparent"
+
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: {
+                            parent.color="#50CCCCCC"
+                        }
+                        onExited: {
+                            parent.color="transparent"
+                        }
+                        onPressed: {
+                            parent.color = "#50CCCCCC"
+                        }
+
+                        onClicked: {
+                            window.visibility = Window.Minimized;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
     }
 
     //设置动画
@@ -161,14 +205,14 @@ Rectangle {
         State {                         //状态1
             name: "hide"              //设置状态名称
             PropertyChanges {           //性质改变
-                target: rectangle
+                target: titleRect
                 height:0
             }
         },
         State {                         //状态2
             name: "show"
             PropertyChanges {           //性质改变
-                target: rectangle
+                target: titleRect
                 height:32
             }
         }

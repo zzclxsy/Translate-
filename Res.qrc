@@ -3,5 +3,6 @@
         <file>image/Top.svg</file>
         <file>image/NoTop.svg</file>
         <file>image/close.svg</file>
+        <file>image/min.svg</file>
     </qresource>
 </RCC>

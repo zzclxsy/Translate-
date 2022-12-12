@@ -4,11 +4,15 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMimeData>
-
+#include "XunFeiTranslate.h"
+#include "WangYiTranslate.h"
 HookDataManager::HookDataManager(QObject *parent):QObject(parent)
 {
     m_keyCtrlPress = false;
     m_keyCPress = 0;
+
+//    mp_translate = new XunFeiTranslate();
+    mp_translate = new WangYiTranslate();
 }
 
 HookDataManager::~HookDataManager()
@@ -28,6 +32,12 @@ void HookDataManager::registerKeyBoardHook()
     if (!flag)
         message("键盘钩子设置失败");
     message("选中待翻译文本,按住Ctrl的同时，再连续按2下C键进行翻译");
+
+    s_MouseCallMsg callmouse;
+    callmouse.name = "mouseCall";
+    callmouse.listenWParam = 0;
+    callmouse.callback =std::bind(&HookDataManager::mouseEvent,this,std::placeholders::_1,std::placeholders::_2);
+    AddMouseHookCallBack(callmouse);
 }
 
 void HookDataManager::uninstallKeyBoardHook()
@@ -35,6 +45,10 @@ void HookDataManager::uninstallKeyBoardHook()
     UninstallAllHook(e_HookType::KEY_BOARD);
 }
 
+void HookDataManager::mouseEvent(e_WParam wParam, LPARAM lParam)
+{
+    POINT pos = GetMousePoint(lParam);
+}
 void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
 {
     DWORD keyCode;
@@ -51,7 +65,7 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
     {
         if (keyCode == KEY_CTRL)
         {
-            if (!m_keyCtrlPress)
+            if (m_keyCtrlPress == false)
             {
                 m_keyCtrlPress = true;
                 m_keyCPress = 0;
@@ -65,7 +79,6 @@ void HookDataManager::keyEvent(e_WParam wParam, LPARAM lParam)
 
             if (m_keyCPress == 2)
             {
-                qDebug()<<"开始翻译";
                 translate();
                 m_keyCPress = 0;
             }
@@ -85,8 +98,12 @@ void HookDataManager::translate()
     const QMimeData *mimeData = clipboard->mimeData();
     if (mimeData->hasText())
     {
-        //将图片数据转为QImage
-        message(m_translate.StartTranslate(mimeData->text()));
+        qDebug()<<"开始翻译";
+        if (mimeData->text().isEmpty()){
+            message("粘贴板无内容");
+            return;
+        }
+        message(mp_translate->StartTranslate(mimeData->text()));
     }
 }
 

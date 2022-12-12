@@ -10,6 +10,8 @@ SOURCES += \
         HookDataManager.cpp \
         HookHelper.cpp \
         HttpHelper.cpp \
+        ITranslate.cpp \
+        WangYiTranslate.cpp \
         XunFeiTranslate.cpp \
         main.cpp
 
@@ -31,6 +33,8 @@ HEADERS += \
     HookDataManager.h \
     HookHelper.h \
     HttpHelper.h \
+    ITranslate.h \
+    WangYiTranslate.h \
     XunFeiTranslate.h
 
 RC_ICONS = fanyi.ico

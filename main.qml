@@ -5,11 +5,11 @@ import QtQml 2.12
 
 Window {
     id: window
-    width: 200
+    width: 350
     height: 200
     visible: true
     title: qsTr("翻译")
-    color: "#00000000"
+    color: "transparent"
     flags: Qt.Window |Qt.FramelessWindowHint
 
     MouseArea{
@@ -36,10 +36,12 @@ Window {
         }
 
         onEntered: {
+            window.height = window.height + 38
             showUI.state = "show"
             showUI.border.width= 1
         }
         onExited: {
+            window.height = window.height - 38
             showUI.state = "hide"
             showUI.border.width= 0
         }
